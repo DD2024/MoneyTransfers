@@ -2,18 +2,14 @@ fun main() {
 
     val cardType = "Mastercard"
     val amount = 20000;
-    var amountMonth = 0
+    var amountMonth = 600001
     var amountDay = 0
 
-    var block = false;
-
-    when {
-        amountMonth + amount >= 600_000 -> block = true
-        amountDay + amount>= 150_000 -> block = true
+    if (excessAmountChek(amountMonth, amountDay, amount)) {
+        println("Лимит превышен. Операция не может быть выполнена.")
+    } else {
+        println("Сумма комиссии: " + calcComission(cardType, amountMonth, amount));
     }
-
-    if (block) println("block")
-    else println("Сумма комиссии: " + calcComission(cardType, amountMonth, amount));
 
 }
 
@@ -28,4 +24,14 @@ fun calcComission(cardType: String = "Мир", amountMonth: Int = 0, amount: Int
         amount * 0.0075 > 35 -> return (amount * 0.0075).toInt()
     }
     return 35
+}
+
+fun excessAmountChek(amountMonth: Int = 0, amountDay: Int = 0, amount: Int): Boolean {
+
+    var block = false;
+    when {
+        amountMonth + amount > 600_000 -> block = true
+        amountDay + amount > 150_000 -> block = true
+    }
+    return block
 }
